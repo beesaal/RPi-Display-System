@@ -1,10 +1,10 @@
 TFT-Display-Hub
 A comprehensive Python-based display system for Raspberry Pi with ILI9341 TFT display. Supports multiple media formats, real-time console output, and dual-display capabilities for both debugging and user feedback.
-
+```link
 https://img.shields.io/badge/Raspberry-Pi-red?logo=raspberrypi
 https://img.shields.io/badge/Python-3.6%252B-blue?logo=python
 https://img.shields.io/badge/License-MIT-green
-
+```
 🎯 Features
 Multi-Format Support: Display GIFs, videos (MP4, AVI), images (JPEG, PNG, BMP), and text files
 
@@ -31,35 +31,40 @@ SPI-enabled connection
 Installation
 Clone the repository:
 
-bash
+```bash
 git clone https://github.com/yourusername/tft-display-hub.git
 cd tft-display-hub
+```
 Run installation script:
 
-bash
+```bash
 sudo chmod +x install_dependencies.sh
 sudo ./install_dependencies.sh
+```
 Reboot your Raspberry Pi:
 
-bash
+```bash
 sudo reboot
+```
 Basic Usage
 Display a media file:
 
-bash
+```bash
 sudo python3 run.py assets/gifs/animation.gif
 sudo python3 run.py assets/videos/demo.mp4
 sudo python3 run.py image.jpg
 sudo python3 run.py document.txt
+```
 Test the display:
 
-bash
+```bash
 sudo python3 src/find_orientation.py
+```
 💡 How to Use in Your Projects
 Method 1: Direct Integration
 Add this to your Python project:
 
-python
+```python
 import sys
 import os
 
@@ -79,6 +84,7 @@ def my_function():
     temperature = read_temperature()
     display_print(f"Temperature: {temperature}°C")
     printf(f"[SENSOR] Raw temp reading: {temperature}")
+```
 Method 2: As a Debugging Console
 Create a debugging module for your project:
 
@@ -113,6 +119,7 @@ debug = ProjectDebugger()
 Method 3: System Monitoring Dashboard
 python
 # system_monitor.py
+```python
 import time
 import psutil
 import subprocess
@@ -148,6 +155,7 @@ class SystemMonitor:
 if __name__ == "__main__":
     monitor = SystemMonitor()
     monitor.run()
+```
 🛠 API Reference
 Core Functions
 Function	Description	Output
@@ -155,7 +163,7 @@ printf(*args)	Print to terminal only	Terminal
 display_print(*args)	Print to TFT display only	Display
 dual_print(*args)	Print to both terminal and display	Both
 Display Control
-python
+```python
 from display_driver import ILI9341, PORTRAIT, LANDSCAPE
 
 # Initialize display
@@ -169,8 +177,9 @@ display.clear_screen()
 
 # Cleanup
 display.cleanup()
+```
 File Display
-python
+```python
 from file_dispatcher import FileDispatcher
 
 # Display any supported file
@@ -178,8 +187,9 @@ dispatcher = FileDispatcher("path/to/file", width=320, height=240)
 if dispatcher.is_supported():
     frame_data, duration = dispatcher.get_next_frame()
     display.display_image(frame_data)
+```
 📁 Project Structure
-text
+```text
 tft-display-hub/
 ├── assets/                 # Sample media files
 │   ├── gifs/
@@ -199,9 +209,10 @@ tft-display-hub/
 ├── install_dependencies.sh
 ├── requirements.txt
 └── run.py
+```
 🎨 Use Cases
 1. IoT Project Dashboard
-python
+```python
 # In your IoT project
 from display_output import display_print
 
@@ -210,8 +221,9 @@ def update_dashboard(sensor_data):
     display_print(f"Temp: {sensor_data['temperature']}°C")
     display_print(f"Humidity: {sensor_data['humidity']}%")
     display_print(f"Lights: {'ON' if sensor_data['lights'] else 'OFF'}")
+```
 2. Robotics Status Display
-python
+```python
 # In robotics project
 from display_output import dual_print, display_print
 
@@ -224,8 +236,9 @@ class RobotController:
         
     def on_error(self, error):
         dual_print(f"❌ Robot error: {error}")
+```
 3. Scientific Instrument Readout
-python
+```python
 # Laboratory equipment
 from display_output import printf, display_print
 
@@ -234,10 +247,11 @@ class Instrument:
         data = self.capture_data()
         printf(f"[RAW_DATA] {data}")  # For logging
         display_print(f"Result: {data['value']} {data['units']}")
+```
 🔧 Configuration
 Edit config/display_config.py for your setup:
 
-python
+```python
 # GPIO Pin configuration (BCM numbering)
 DC = 24
 RST = 25
@@ -250,6 +264,7 @@ SPI_DEVICE = 0
 # Display orientation
 PORTRAIT = 0xA8   # 240x320
 LANDSCAPE = 0x08  # 320x240
+```
 🐛 Troubleshooting
 Display not working?
 
