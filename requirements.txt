@@ -1,0 +1,15 @@
+RPi.GPIO>=0.7.0
+spidev>=3.5
+Pillow>=9.0.0
+numpy>=1.21.0
+opencv-python>=4.5.0
+
+
+to use display printing service for ili9341 display while running program 
+add this code on the top of the program file
+
+
+# Add this to the top of your file
+current_dir = os.path.dirname(os.path.abspath(__file__))
+src_dir = os.path.join(current_dir, 'src')
+sys.path.insert(0, src_dir)
