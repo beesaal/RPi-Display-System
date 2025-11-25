@@ -82,7 +82,7 @@ def my_function():
 Method 2: As a Debugging Console
 Create a debugging module for your project:
 
-python
+```python
 # debug_console.py
 import sys
 import os
@@ -107,7 +107,7 @@ class ProjectDebugger:
     def progress_update(self, step, total):
         progress = (step / total) * 100
         dual_print(f"Progress: {progress:.1f}% ({step}/{total})")
-
+```
 # Global instance
 debug = ProjectDebugger()
 Method 3: System Monitoring Dashboard
