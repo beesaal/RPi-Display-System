@@ -17,25 +17,25 @@ def main():
     output = init_output(rotation='portrait')
     
     # Parse command line arguments
-    parser = argparse.ArgumentParser(description='Display files on TFT screen')
+    parser = argparse.ArgumentParser(description='\nDisplay files on TFT screen')
     parser.add_argument('file_path', nargs='?', default=None, 
-                       help='Path to file to display (GIF, image, video, or text)')
+                       help='\nPath to file to display (GIF, image, video, or text)')
     
     args = parser.parse_args()
     file_path = args.file_path
     
     # Demonstrate the different print functions
-    printf("=== TERMINAL ONLY ===")
-    printf("This message only appears in terminal")
-    printf("")
+    printf("\n=== TERMINAL ONLY ===")
+    printf("\nThis message only appears in terminal")
+    printf("\n")
     
-    display_print("=== DISPLAY ONLY ===")
-    display_print("This message only appears on TFT display")
-    display_print("")
+    display_print("\n=== DISPLAY ONLY ===\n")
+    display_print("\nThis message only appears on TFT display")
+    display_print("\n")
     
-    dual_print("=== BOTH TERMINAL & DISPLAY ===")
-    dual_print("This message appears in both places!")
-    dual_print("")
+    dual_print("\n=== BOTH TERMINAL & DISPLAY ===")
+    dual_print("\nThis message appears in both places!")
+    dual_print("\n")
     
     # File loading logic
     if not file_path:
@@ -46,22 +46,22 @@ def main():
                 files = [f for f in os.listdir(assets_dir) if os.path.isfile(os.path.join(assets_dir, f))]
                 if files:
                     file_path = os.path.join(assets_dir, files[0])
-                    dual_print(f"Using first file found: {file_path}")
+                    dual_print(f"\nUsing first file found: {file_path}")
                     break
         
         if not file_path:
-            dual_print("❌ No file specified and no files found in assets directories.")
-            dual_print("💡 Usage: python main.py <file_path>")
+            dual_print("\nOops! : No file specified and no files found in assets directories.")
+            dual_print("\nUsage: python main.py <file_path>")
             return
     
     if not os.path.exists(file_path):
-        dual_print(f"❌ File not found: {file_path}")
+        dual_print(f"\nOops! : File not found: {file_path}")
         return
     
     try:
         from file_dispatcher import FileDispatcher
         
-        dual_print(f"📁 Loading file: {file_path}")
+        dual_print(f"\nLoading file: {file_path}")
         
         # Get display dimensions
         display_width = output.display.width if output.display else 320
@@ -72,31 +72,31 @@ def main():
                                   display_height=display_height)
         
         if not dispatcher.is_supported():
-            error_msg = f"❌ Unsupported format: {os.path.basename(file_path)}"
+            error_msg = f"\nOops! :Unsupported format: {os.path.basename(file_path)}"
             dual_print(error_msg)
             
             # Show error on display
             display_print("=" * 30)
-            display_print("UNSUPPORTED FILE")
+            display_print("\nUNSUPPORTED FILE")
             display_print("=" * 30)
-            display_print(f"File: {os.path.basename(file_path)}")
-            display_print("This format cannot be")
+            display_print(f"\nFile: {os.path.basename(file_path)}")
+            display_print("\nThis format cannot be")
             display_print("displayed on this system")
             
             time.sleep(5)
             return
         
         file_type = dispatcher.get_file_type()
-        dual_print(f"📄 File type: {file_type}")
-        dual_print("🎬 Displaying file... Press Ctrl+C to exit")
+        dual_print(f"\nFile type: {file_type}")
+        dual_print("\nDisplaying file... Press Ctrl+C to exit")
         
         # Show loading message on display
         display_print("=" * 30)
-        display_print("LOADING FILE")
+        display_print("\nLOADING FILE")
         display_print("=" * 30)
-        display_print(f"Type: {file_type.upper()}")
-        display_print(f"File: {os.path.basename(file_path)}")
-        display_print("Starting playback...")
+        display_print(f"\nType: {file_type.upper()}")
+        display_print(f"\nFile: {os.path.basename(file_path)}")
+        display_print("\nStarting playback...")
         
         time.sleep(2)  # Show loading message for 2 seconds
         
@@ -125,16 +125,16 @@ def main():
             else:
                 # No more data (for static images or end of text)
                 if file_type == 'image':
-                    dual_print("✅ Image display completed")
+                    dual_print("\nImage display completed")
                     time.sleep(5)
                     break
                 else:
                     time.sleep(0.1)
             
     except KeyboardInterrupt:
-        dual_print("\n🛑 Exiting...")
+        dual_print("\nExiting...")
     except Exception as e:
-        dual_print(f"❌ Error: {e}")
+        dual_print(f"\nError: {e}")
         import traceback
         traceback.print_exc()
     finally:
@@ -142,7 +142,7 @@ def main():
             dispatcher.cleanup()
         if output:
             output.cleanup()
-        dual_print("✅ Cleanup complete")
+        dual_print("\nCleanup complete")
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,11 @@
 from PIL import Image
 import numpy as np
 import os
+import sys
+
+
+# Import our dual output system
+from display_output import init_output, printf, display_print, dual_print
 
 class ImageHandler:
     def __init__(self, image_path, display_width=320, display_height=240):
@@ -12,10 +17,11 @@ class ImageHandler:
     
     def load_image(self):
         """Load and prepare image for display"""
+        display_print("\n\n\n======== Loading image...=========\n\nPath: {}".format(self.image_path))
         try:
             image = Image.open(self.image_path)
-            print(f"Original image: {image.size}, Mode: {image.mode}")
-            print(f"Target display: {self.display_width}x{self.display_height}")
+            dual_print(f"\nOriginal image: {image.size}, Mode: {image.mode}")
+            dual_print(f"\nTarget display: {self.display_width}x{self.display_height}")
             
             # Convert to RGB if necessary
             if image.mode != 'RGB':
@@ -30,10 +36,10 @@ class ImageHandler:
             # Convert to RGB565
             self.image_data = self.rgb_to_rgb565(resized_image)
             
-            print("Image processed successfully")
+            dual_print("\nImage processed successfully")
             
         except Exception as e:
-            print(f"Error loading image: {e}")
+            dual_print(f"\nError loading image: {e}")
             raise
     
     def rgb_to_rgb565(self, image):

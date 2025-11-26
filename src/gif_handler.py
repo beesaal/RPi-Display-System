@@ -3,6 +3,11 @@ import numpy as np
 import os
 import sys
 
+# Add this to the top of your file
+current_dir = os.path.dirname(os.path.abspath(__file__))
+src_dir = os.path.join(current_dir, 'src')
+sys.path.insert(0, src_dir)
+
 class GIFHandler:
     def __init__(self, gif_path, display_width=320, display_height=240):
         self.gif_path = gif_path
@@ -15,6 +20,7 @@ class GIFHandler:
     
     def load_gif(self):
         """Load GIF and convert frames to RGB565 format"""
+        dual_print(f"Loading GIF from {self.gif_path}")
         try:
             gif = Image.open(self.gif_path)
             print(f"Original GIF: {gif.size}, {gif.n_frames} frames")
