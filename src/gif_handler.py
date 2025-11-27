@@ -3,10 +3,8 @@ import numpy as np
 import os
 import sys
 
-# Add this to the top of your file
-current_dir = os.path.dirname(os.path.abspath(__file__))
-src_dir = os.path.join(current_dir, 'src')
-sys.path.insert(0, src_dir)
+# Import our dual output system
+from display_output import init_output, printf, display_print, dual_print
 
 class GIFHandler:
     def __init__(self, gif_path, display_width=320, display_height=240):
