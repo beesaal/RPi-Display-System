@@ -1,3 +1,22 @@
+#ILI9341 TFT display with Raspberry Pi (Python Based)
+##Pin Connection
+```text
+        2.8" TFT Display (ILI9341)
+        ┌─────────────────────┐
+        │ 1: VCC  ──────► 3.3V (Pin 1)          │
+        │ 2: GND  ──────► GND  (Pin 6)          │
+        │ 3: CS   ──────► GPIO 8  (Pin 24)      │
+        │ 4: RESET─────► GPIO 25 (Pin 22)      │
+        │ 5: DC   ──────► GPIO 24 (Pin 18)      │
+        │ 6: SDI  ──────► GPIO 10 (Pin 19) MOSI │
+        │ 7: SCK  ──────► GPIO 11 (Pin 23) SCLK │
+        │ 8: LED  ──────► 3.3V (with 100Ω)      │
+        │ 9: SDO  ──────► GPIO 9  (Pin 21) MISO │
+        └─────────────────────┘
+```
+
+
+
 TFT-Display-Hub
 A comprehensive Python-based display system for Raspberry Pi with ILI9341 TFT display. Supports multiple media formats, real-time console output, and dual-display capabilities for both debugging and user feedback.
 ```link
