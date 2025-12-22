@@ -1,5 +1,5 @@
-#ILI9341 TFT display with Raspberry Pi (Python Based)
-##Pin Connection
+# ILI9341 TFT display with Raspberry Pi (Python Based)
+## Pin Connection
 ```text
         2.8" TFT Display (ILI9341)
         ┌─────────────────────┐
