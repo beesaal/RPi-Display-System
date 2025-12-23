@@ -3,6 +3,9 @@
 TFT-Display-Hub
 A comprehensive Python-based display system for Raspberry Pi with ILI9341 TFT display. Supports multiple media formats, real-time console output, and dual-display capabilities for both debugging and user feedback.
 
+![Untitled video - Made with Clipchamp](https://github.com/user-attachments/assets/4e4a4b7e-21e8-4eae-abe9-faa9669a6c5d)
+
+
 ## 🎯 Features
 
 - Display GIF animations on ILI9341 2.8" TFT display
