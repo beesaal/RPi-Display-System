@@ -1,212 +1,108 @@
-# ILI9341 TFT display with Raspberry Pi (Python Based)
-## Pin Connection
+# Raspberry Pi TFT Display GIF Player
+
+TFT-Display-Hub
+A comprehensive Python-based display system for Raspberry Pi with ILI9341 TFT display. Supports multiple media formats, real-time console output, and dual-display capabilities for both debugging and user feedback.
+
+## 🎯 Features
+
+- Display GIF animations on ILI9341 2.8" TFT display
+- Support for multiple display orientations (Portrait/Landscape)
+- Adjustable image positioning and scaling
+- Optimized SPI communication for smooth playback
+- Easy configuration through simple Python files
+
+## 🚀 Hardware Requirements
+
+- Raspberry Pi (3/4/Zero) with GPIO pins
+- 2.8" ILI9341 TFT Display with SPI interface
+- Jumper wires for connections
+- 100Ω resistor for backlight (optional but recommended)
+
+## Wiring Diagram
+TFT Display (ILI9341) → Raspberry Pi GPIO
 ```text
-        2.8" TFT Display (ILI9341)
+
         ┌─────────────────────┐
         │ 1: VCC  ──────► 3.3V (Pin 1)          │
         │ 2: GND  ──────► GND  (Pin 6)          │
         │ 3: CS   ──────► GPIO 8  (Pin 24)      │
-        │ 4: RESET─────► GPIO 25 (Pin 22)      │
+        │ 4: RESET─────► GPIO 25 (Pin 22)       │
         │ 5: DC   ──────► GPIO 24 (Pin 18)      │
         │ 6: SDI  ──────► GPIO 10 (Pin 19) MOSI │
         │ 7: SCK  ──────► GPIO 11 (Pin 23) SCLK │
         │ 8: LED  ──────► 3.3V (with 100Ω)      │
         │ 9: SDO  ──────► GPIO 9  (Pin 21) MISO │
         └─────────────────────┘
+
 ```
 
+## Software Installation
 
-
-TFT-Display-Hub
-A comprehensive Python-based display system for Raspberry Pi with ILI9341 TFT display. Supports multiple media formats, real-time console output, and dual-display capabilities for both debugging and user feedback.
-```link
-https://img.shields.io/badge/Raspberry-Pi-red?logo=raspberrypi
-https://img.shields.io/badge/Python-3.6%252B-blue?logo=python
-https://img.shields.io/badge/License-MIT-green
-```
-🎯 Features
-Multi-Format Support: Display GIFs, videos (MP4, AVI), images (JPEG, PNG, BMP), and text files
-
-Real-time Console Output: Use as a debugging display with printf(), display_print(), and dual_print() functions
-
-Dual Output System: Choose between terminal-only, display-only, or both outputs
-
-ILI9341 TFT Support: Optimized for 2.8" ILI9341 SPI displays
-
-Flexible Rotation: Portrait and landscape modes
-
-Easy Integration: Simple API for use in other projects
-
-Error Handling: Graceful fallbacks and clear error messages
-
-🚀 Quick Start
-Hardware Requirements
-Raspberry Pi (3/4/Zero)
-
-ILI9341 2.8" TFT Display
-
-SPI-enabled connection
-
-Installation
-Clone the repository:
-
+1. **Update system and install dependencies:**
 ```bash
-git clone https://github.com/yourusername/tft-display-hub.git
-cd tft-display-hub
+sudo apt update
+sudo apt install python3 python3-pip python3-pil python3-numpy
 ```
-Run installation script:
-
+Install Python libraries:
 ```bash
-sudo chmod +x install_dependencies.sh
-sudo ./install_dependencies.sh
+pip3 install RPi.GPIO spidev Pillow numpy
+Enable SPI interface:
 ```
-Reboot your Raspberry Pi:
-
 ```bash
+sudo raspi-config nonint do_spi 0
 sudo reboot
 ```
-Basic Usage
-Display a media file:
+Quick Start
+Clone or copy the project files:
 
 ```bash
+git clone https://github.com/beesaal/RPi-Display-System.git
+```
+Place your GIF file:
+```bash
+cd RPi-Display-System/assests/gifs/...
+```
+cp your_gif.gif to RPi-Display-System/assests/gifs/your_gif.gif
+
+Run the application:
+Inside RPi-Display-System/... folder run:
+```bash
+sudo python3 run.py
+or
+sudo python3 run.py assests/gifs/your_gif.gif
+
 sudo python3 run.py assets/gifs/animation.gif
 sudo python3 run.py assets/videos/demo.mp4
 sudo python3 run.py image.jpg
 sudo python3 run.py document.txt
 ```
+Configuration
+Display Orientation
 Test the display:
 
 ```bash
 sudo python3 src/find_orientation.py
 ```
-💡 How to Use in Your Projects
-Method 1: Direct Integration
-Add this to your Python project:
+Edit config/display_config.py to set the correct orientation:
 
-```python
-import sys
-import os
-
-# Add TFT-Display-Hub to path
-tft_path = "/path/to/tft-display-hub/src"
-sys.path.insert(0, tft_path)
-
-from display_output import printf, display_print, dual_print
-
-# Use in your code
-def my_function():
-    printf("Debug info - terminal only")           # Terminal only
-    display_print("User message - display only")   # TFT display only  
-    dual_print("Important info - both places!")    # Both terminal and display
-    
-    # Example with sensor data
-    temperature = read_temperature()
-    display_print(f"Temperature: {temperature}°C")
-    printf(f"[SENSOR] Raw temp reading: {temperature}")
-```
-Method 2: As a Debugging Console
-Create a debugging module for your project:
-
-```python
-# debug_console.py
-import sys
-import os
-tft_path = "/path/to/tft-display-hub/src"
-sys.path.insert(0, tft_path)
-
-from display_output import init_output, printf, display_print, dual_print
-
-class ProjectDebugger:
-    def __init__(self):
-        self.output = init_output('portrait')
-        
-    def log_sensor(self, sensor_name, value):
-        printf(f"[SENSOR] {sensor_name}: {value}")
-        
-    def show_status(self, message):
-        display_print(f"Status: {message}")
-        
-    def critical_error(self, error):
-        dual_print(f"❌ CRITICAL: {error}")
-        
-    def progress_update(self, step, total):
-        progress = (step / total) * 100
-        dual_print(f"Progress: {progress:.1f}% ({step}/{total})")
-```
-# Global instance
-debug = ProjectDebugger()
-Method 3: System Monitoring Dashboard
 python
-# system_monitor.py
-```python
-import time
-import psutil
-import subprocess
-from display_output import init_output, display_print
+# For Portrait mode (240x320)
+display_orientation = PORTRAIT  # 0x48
 
-class SystemMonitor:
-    def __init__(self):
-        self.output = init_output('portrait')
-        
-    def get_cpu_temp(self):
-        try:
-            output = subprocess.check_output(['vcgencmd', 'measure_temp']).decode()
-            return float(output.split('=')[1].split("'")[0])
-        except:
-            return 0.0
-            
-    def update_display(self):
-        cpu_percent = psutil.cpu_percent()
-        memory = psutil.virtual_memory()
-        cpu_temp = self.get_cpu_temp()
-        
-        display_print("=== SYSTEM STATUS ===")
-        display_print(f"CPU: {cpu_percent:.1f}%")
-        display_print(f"Temp: {cpu_temp:.1f}°C")
-        display_print(f"RAM: {memory.percent:.1f}%")
-        display_print("====================")
-        
-    def run(self):
-        while True:
-            self.update_display()
-            time.sleep(5)
+# For Landscape mode (320x240)
+display_orientation = LANDSCAPE  # 0x28
+Image Positioning
+Adjust src/gif_handler.py for perfect positioning:
 
-if __name__ == "__main__":
-    monitor = SystemMonitor()
-    monitor.run()
-```
-🛠 API Reference
-Core Functions
-Function	Description	Output
-printf(*args)	Print to terminal only	Terminal
-display_print(*args)	Print to TFT display only	Display
-dual_print(*args)	Print to both terminal and display	Both
-Display Control
-```python
-from display_driver import ILI9341, PORTRAIT, LANDSCAPE
+python
+# Manual position adjustments
+MANUAL_X_ADJUST = 0    # Positive = move right, Negative = move left
+MANUAL_Y_ADJUST = 0    # Positive = move down, Negative = move up
 
-# Initialize display
-display = ILI9341(rotation=PORTRAIT)  # or LANDSCAPE
+# GIF size on screen
+GIF_WIDTH = 240
+GIF_HEIGHT = 320
 
-# Display raw image data (RGB565)
-display.display_image(image_data)
-
-# Clear screen
-display.clear_screen()
-
-# Cleanup
-display.cleanup()
-```
-File Display
-```python
-from file_dispatcher import FileDispatcher
-
-# Display any supported file
-dispatcher = FileDispatcher("path/to/file", width=320, height=240)
-if dispatcher.is_supported():
-    frame_data, duration = dispatcher.get_next_frame()
-    display.display_image(frame_data)
-```
 📁 Project Structure
 ```text
 tft-display-hub/
@@ -229,12 +125,13 @@ tft-display-hub/
 ├── requirements.txt
 └── run.py
 ```
-🎨 Use Cases
+
+🎨 Debugging text-print Use Cases
 1. IoT Project Dashboard
 ```python
 # In your IoT project
 from display_output import display_print
-
+eg.
 def update_dashboard(sensor_data):
     display_print("=== SMART HOME ===")
     display_print(f"Temp: {sensor_data['temperature']}°C")
@@ -244,6 +141,7 @@ def update_dashboard(sensor_data):
 2. Robotics Status Display
 ```python
 # In robotics project
+eg.
 from display_output import dual_print, display_print
 
 class RobotController:
@@ -259,6 +157,7 @@ class RobotController:
 3. Scientific Instrument Readout
 ```python
 # Laboratory equipment
+eg.
 from display_output import printf, display_print
 
 class Instrument:
@@ -284,48 +183,15 @@ SPI_DEVICE = 0
 PORTRAIT = 0xA8   # 240x320
 LANDSCAPE = 0x08  # 320x240
 ```
-🐛 Troubleshooting
-Display not working?
 
-Run orientation finder: sudo python3 src/find_orientation.py
 
-Check SPI is enabled: lsmod | grep spi
 
-Verify wiring connections
+License
+MIT License - See LICENSE file for details.
 
-Import errors?
-
-Ensure you've run the installation script
-
-Check Python path includes the src directory
-
-Performance issues?
-
-Reduce video resolution for smoother playback
-
-Use smaller GIFs or lower frame rates
-
-🤝 Contributing
-Fork the repository
-
-Create a feature branch: git checkout -b feature/amazing-feature
-
-Commit your changes: git commit -m 'Add amazing feature'
-
-Push to the branch: git push origin feature/amazing-feature
-
-Open a Pull Request
-
-📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-🙏 Acknowledgments
-Raspberry Pi Foundation for hardware support
+Acknowledgments
+Raspberry Pi Foundation for hardware
 
 PIL/Pillow for image processing
 
-OpenCV for video support
-
-SPIDev for SPI communication
-
-⭐ Star this repo if you find it useful!
+SPIdev for SPI communication
